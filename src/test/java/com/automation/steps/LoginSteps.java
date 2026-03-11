@@ -16,8 +16,8 @@ public class LoginSteps {
     }
 
     @Step("Login with credentials: {0} / {1}")
-    public void loginWithCredentials(String username, String password) {
-        loginPage.enterUsername(username);
+    public void loginWithCredentials(String email, String password) {
+        loginPage.enterEmail(email);
         loginPage.enterPassword(password);
         loginPage.clickLogin();
     }

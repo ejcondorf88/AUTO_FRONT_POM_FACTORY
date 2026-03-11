@@ -7,14 +7,20 @@ import org.openqa.selenium.support.PageFactory;
 
 public class DashboardPage extends PageObject {
 
-    @FindBy(css = ".oxd-topbar-header-breadcrumb-module")
+    @FindBy(css = "[data-slot='breadcrumb-page']")
     private WebElement labelDashboard;
 
-    @FindBy(css = ".oxd-userdropdown-name")
+    @FindBy(css = "[data-slot='sidebar-trigger']")
+    private WebElement buttonSidebarTrigger;
+
+    @FindBy(xpath = "//a[@href='/transactions']")
+    private WebElement linkTransactions;
+
+    @FindBy(css = ".oxd-userdropdown-name") // Placeholder from previous, better to use avatar-fallback
     private WebElement dropdownUser;
 
-    @FindBy(xpath = "//a[text()='Logout']")
-    private WebElement linkLogout;
+    @FindBy(xpath = "//span[contains(@class, 'avatar-fallback')]")
+    private WebElement avatarUser;
 
     public DashboardPage() {
         PageFactory.initElements(getDriver(), this);
@@ -22,6 +28,16 @@ public class DashboardPage extends PageObject {
 
     public String getHeaderText() {
         return element(labelDashboard).getText();
+    }
+
+    public void openSidebar() {
+        if (element(buttonSidebarTrigger).isVisible()) {
+            element(buttonSidebarTrigger).click();
+        }
+    }
+
+    public void goToTransactions() {
+        element(linkTransactions).click();
     }
 
     public void clickUserDropdown() {
