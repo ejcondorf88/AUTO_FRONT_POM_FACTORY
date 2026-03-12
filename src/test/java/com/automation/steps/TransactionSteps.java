@@ -25,7 +25,7 @@ public class TransactionSteps {
         transactionsPage.enterDescription(description);
         transactionsPage.enterAmount(amount);
         transactionsPage.enterDate(date);
-        transactionsPage.clickSubmitButton();
+        transactionsPage.clickSubmit();
     }
 
     @Step("Verify that the transaction {0} appears in the transactions list")

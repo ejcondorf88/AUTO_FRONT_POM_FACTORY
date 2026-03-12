@@ -22,7 +22,7 @@ public class FinancialTransactionStepDefinitions {
 
     @Given("the visitor registers with name {string}, email {string}, and password {string}")
     public void registerVisitor(String name, String email, String password) {
-        registerSteps.registerUser(name, email, password);
+        registerSteps.registerNewUser(name, email, password);
     }
 
     @When("the user logs in with email {string} and password {string}")
