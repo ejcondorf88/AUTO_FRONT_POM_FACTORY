@@ -4,6 +4,7 @@ import com.automation.pages.LoginPage;
 import com.automation.pages.DashboardPage;
 import net.serenitybdd.annotations.Step;
 import org.assertj.core.api.Assertions;
+import org.openqa.selenium.By;
 
 public class LoginSteps {
 
@@ -16,10 +17,11 @@ public class LoginSteps {
     }
 
     @Step("Login with credentials: {0} / {1}")
-    public void loginWithCredentials(String username, String password) {
-        loginPage.enterUsername(username);
+    public void loginWithCredentials(String email, String password) {
+        loginPage.enterEmail(email);
         loginPage.enterPassword(password);
         loginPage.clickLogin();
+        dashboardPage.waitForRenderedElements(By.cssSelector("[data-slot='sidebar-trigger']"));
     }
 
     @Step("Verify that the user is on the dashboard")
@@ -30,6 +32,5 @@ public class LoginSteps {
     @Step("Perform logout from the application")
     public void logout() {
         dashboardPage.clickUserDropdown();
-        dashboardPage.clickLogout();
     }
 }

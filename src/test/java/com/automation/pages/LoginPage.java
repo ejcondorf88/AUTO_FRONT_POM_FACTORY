@@ -1,34 +1,52 @@
 package com.automation.pages;
 
+import net.serenitybdd.annotations.DefaultUrl;
 import net.serenitybdd.core.pages.PageObject;
-import org.openqa.selenium.WebElement;
+import net.serenitybdd.core.pages.WebElementFacade;
+import java.time.Duration;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
+@DefaultUrl("http://localhost:3000/login")
 public class LoginPage extends PageObject {
 
-    @FindBy(name = "username")
-    private WebElement inputUsername;
+  @FindBy(id = "email")
+  private WebElementFacade inputEmail;
 
-    @FindBy(name = "password")
-    private WebElement inputPassword;
+  @FindBy(id = "password")
+  private WebElementFacade inputPassword;
 
-    @FindBy(css = "button[type='submit']")
-    private WebElement buttonLogin;
+  @FindBy(css = "button[type='submit']")
+  private WebElementFacade buttonLogin;
 
-    public LoginPage() {
-        PageFactory.initElements(getDriver(), this);
-    }
+  @FindBy(xpath = "//a[contains(@href,'/register') or contains(.,'Registr')]")
+  private WebElementFacade linkRegister;
 
-    public void enterUsername(String username) {
-        element(inputUsername).type(username);
-    }
+  public void openLoginPage() {
+    open();
+    withTimeoutOf(Duration.ofSeconds(15)).waitFor(ExpectedConditions.elementToBeClickable(By.id("email")));
+  }
 
-    public void enterPassword(String password) {
-        element(inputPassword).type(password);
-    }
+  public void enterEmail(String email) {
+    waitFor(ExpectedConditions.urlContains("/login"));
+    
+    $ (By.id("email")).waitUntilClickable();
+    waitABit(500); 
+    $ (By.id("email")).clear();
+    $ (By.id("email")).type(email);
+  }
 
-    public void clickLogin() {
-        element(buttonLogin).click();
-    }
+  public void enterPassword(String password) {
+    inputPassword.waitUntilEnabled().type(password);
+  }
+
+  public void clickLogin() {
+    buttonLogin.waitUntilClickable().click();
+  }
+
+  public void clickRegister() {
+    linkRegister.waitUntilClickable().click();
+  }
 }

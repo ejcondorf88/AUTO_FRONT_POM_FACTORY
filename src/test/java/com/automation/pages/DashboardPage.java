@@ -1,34 +1,53 @@
 package com.automation.pages;
 
 import net.serenitybdd.core.pages.PageObject;
-import org.openqa.selenium.WebElement;
+import net.serenitybdd.core.pages.WebElementFacade;
+import org.openqa.selenium.By;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
+import java.time.Duration;
 
 public class DashboardPage extends PageObject {
 
-    @FindBy(css = ".oxd-topbar-header-breadcrumb-module")
-    private WebElement labelDashboard;
+    @FindBy(css = "[data-slot='breadcrumb-page']")
+    private WebElementFacade labelDashboard;
 
-    @FindBy(css = ".oxd-userdropdown-name")
-    private WebElement dropdownUser;
+    @FindBy(css = "[data-slot='sidebar-trigger']")
+    private WebElementFacade buttonSidebarTrigger;
 
-    @FindBy(xpath = "//a[text()='Logout']")
-    private WebElement linkLogout;
+    @FindBy(xpath = "//a[contains(@href,'transactions')]")
+    private WebElementFacade linkTransactions;
 
-    public DashboardPage() {
-        PageFactory.initElements(getDriver(), this);
-    }
+    @FindBy(css = "[data-slot='avatar']")
+    private WebElementFacade avatarUser;
 
     public String getHeaderText() {
-        return element(labelDashboard).getText();
+        return labelDashboard.waitUntilVisible().getText();
+    }
+
+    public void openSidebar() {
+        evaluateJavascript("document.body.style.pointerEvents = 'auto'");
+        if (buttonSidebarTrigger.isVisible()) {
+            buttonSidebarTrigger.withTimeoutOf(Duration.ofSeconds(5)).waitUntilClickable().click();
+            waitForPresenceOf("[data-slot='sidebar-wrapper']");
+        }
+    }
+
+    public void goToTransactions() {
+        openSidebar();
+        
+        WebElementFacade link = find(By.xpath("//a[contains(.,'Transacci') or contains(@href,'transactions')]"));
+
+        link.withTimeoutOf(Duration.ofSeconds(10)).waitUntilClickable();
+        
+            link.click();
+      
+
+        waitForCondition().withTimeout(Duration.ofSeconds(10))
+            .until(d -> getDriver().getCurrentUrl().contains("transactions") 
+                   || findAll(By.xpath("//h2[contains(.,'Listado') or contains(.,'Transacci')]")).size() > 0);
     }
 
     public void clickUserDropdown() {
-        element(dropdownUser).click();
-    }
-
-    public void clickLogout() {
-        element(linkLogout).click();
+        avatarUser.waitUntilClickable().click();
     }
 }
