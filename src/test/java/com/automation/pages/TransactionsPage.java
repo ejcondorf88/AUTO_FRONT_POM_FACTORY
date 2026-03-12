@@ -30,13 +30,13 @@ public class TransactionsPage extends PageObject {
 
     public void clickNewTransaction() {
         waitForCondition().withTimeout(Duration.ofSeconds(15))
-            .until(ExpectedConditions.elementToBeClickable(By.xpath("//button[contains(.,'Transacci') or .//*[contains(@class, 'lucide-plus')]]")));
+            .until(ExpectedConditions.elementToBeClickable(buttonOpenModal));
 
         evaluateJavascript("arguments[0].scrollIntoView({behavior: 'instant', block: 'center'});", buttonOpenModal);
         waitABit(1000);
         buttonOpenModal.click();
         
-        $ (By.name("description")).withTimeoutOf(Duration.ofSeconds(10)).waitUntilVisible();
+        inputDescription.withTimeoutOf(Duration.ofSeconds(10)).waitUntilVisible();
         waitABit(2000); 
     }
 
@@ -85,17 +85,15 @@ public class TransactionsPage extends PageObject {
     }
 
     public void enterDescription(String description) {
-        WebElementFacade field = $(By.name("description"));
-        field.waitUntilClickable().click();
-        field.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.BACK_SPACE);
-        field.type(description);
+        inputDescription.waitUntilClickable().click();
+        inputDescription.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.BACK_SPACE);
+        inputDescription.type(description);
     }
 
     public void enterAmount(String amount) {
-        WebElementFacade field = $(By.name("amount"));
-        field.waitUntilClickable().click();
-        field.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.BACK_SPACE);
-        field.type(amount);
+        inputAmount.waitUntilClickable().click();
+        inputAmount.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.BACK_SPACE);
+        inputAmount.type(amount);
     }
 
     public void enterDate(String date) {
@@ -103,15 +101,14 @@ public class TransactionsPage extends PageObject {
             "arguments[0].value = arguments[1]; " +
             "arguments[0].dispatchEvent(new Event('input', {bubbles: true})); " +
             "arguments[0].dispatchEvent(new Event('change', {bubbles: true}));", 
-            $(By.name("date")), date
+            inputDate, date
         );
     }
 
     public void clickSubmit() {
-        WebElementFacade btn = $(By.xpath("//button[@type='submit' and contains(., 'Crear')]"));
-        btn.waitUntilClickable().click();
+        buttonSubmit.waitUntilClickable().click();
         
-        btn.withTimeoutOf(Duration.ofSeconds(10)).waitUntilNotVisible();
+        buttonSubmit.withTimeoutOf(Duration.ofSeconds(10)).waitUntilNotVisible();
         waitABit(2500); 
     }
 

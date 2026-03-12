@@ -32,10 +32,10 @@ public class LoginPage extends PageObject {
   public void enterEmail(String email) {
     waitFor(ExpectedConditions.urlContains("/login"));
     
-    $ (By.id("email")).waitUntilClickable();
+    inputEmail.waitUntilClickable();
     waitABit(500); 
-    $ (By.id("email")).clear();
-    $ (By.id("email")).type(email);
+    inputEmail.clear();
+    inputEmail.type(email);
   }
 
   public void enterPassword(String password) {
