@@ -14,7 +14,7 @@ public class DashboardPage extends PageObject {
     @FindBy(css = "[data-slot='sidebar-trigger']")
     private WebElementFacade buttonSidebarTrigger;
 
-    @FindBy(xpath = "//a[contains(@href,'transactions')]")
+    @FindBy(xpath = "//a[contains(.,'Transacci') or contains(@href,'transactions')]")
     private WebElementFacade linkTransactions;
 
     @FindBy(css = "[data-slot='avatar']")
@@ -35,11 +35,7 @@ public class DashboardPage extends PageObject {
     public void goToTransactions() {
         openSidebar();
         
-        WebElementFacade link = find(By.xpath("//a[contains(.,'Transacci') or contains(@href,'transactions')]"));
-
-        link.withTimeoutOf(Duration.ofSeconds(10)).waitUntilClickable();
-        
-            link.click();
+        linkTransactions.withTimeoutOf(Duration.ofSeconds(10)).waitUntilClickable().click();
       
 
         waitForCondition().withTimeout(Duration.ofSeconds(10))
