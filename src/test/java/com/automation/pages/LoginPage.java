@@ -9,7 +9,7 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
-@DefaultUrl("http://localhost:3000/login")
+@DefaultUrl("/login")
 public class LoginPage extends PageObject {
 
   @FindBy(id = "email")
@@ -21,21 +21,16 @@ public class LoginPage extends PageObject {
   @FindBy(css = "button[type='submit']")
   private WebElementFacade buttonLogin;
 
-  @FindBy(xpath = "//a[contains(@href,'/register') or contains(.,'Registr')]")
+  @FindBy(css = "a[href*='/register']")
   private WebElementFacade linkRegister;
 
   public void openLoginPage() {
     open();
-    withTimeoutOf(Duration.ofSeconds(15)).waitFor(ExpectedConditions.elementToBeClickable(By.id("email")));
+    inputEmail.waitUntilVisible();
   }
 
   public void enterEmail(String email) {
-    waitFor(ExpectedConditions.urlContains("/login"));
-    
-    inputEmail.waitUntilClickable();
-    waitABit(500); 
-    inputEmail.clear();
-    inputEmail.type(email);
+    inputEmail.waitUntilClickable().type(email);
   }
 
   public void enterPassword(String password) {
@@ -49,4 +44,4 @@ public class LoginPage extends PageObject {
   public void clickRegister() {
     linkRegister.waitUntilClickable().click();
   }
-}
+}

@@ -14,7 +14,7 @@ public class DashboardPage extends PageObject {
     @FindBy(css = "[data-slot='sidebar-trigger']")
     private WebElementFacade buttonSidebarTrigger;
 
-    @FindBy(xpath = "//a[contains(.,'Transacci') or contains(@href,'transactions')]")
+    @FindBy(css = "a[href*='/transactions']")
     private WebElementFacade linkTransactions;
 
     @FindBy(css = "[data-slot='avatar']")
@@ -25,9 +25,8 @@ public class DashboardPage extends PageObject {
     }
 
     public void openSidebar() {
-        evaluateJavascript("document.body.style.pointerEvents = 'auto'");
-        if (buttonSidebarTrigger.isVisible()) {
-            buttonSidebarTrigger.withTimeoutOf(Duration.ofSeconds(5)).waitUntilClickable().click();
+        if (buttonSidebarTrigger.isCurrentlyVisible()) {
+            buttonSidebarTrigger.waitUntilClickable().click();
             waitForPresenceOf("[data-slot='sidebar-wrapper']");
         }
     }

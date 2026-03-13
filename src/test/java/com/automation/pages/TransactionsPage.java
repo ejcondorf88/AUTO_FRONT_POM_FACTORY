@@ -8,7 +8,6 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import java.time.Duration;
 import java.util.List;
-import java.util.Random;
 import java.util.stream.Collectors;
 
 public class TransactionsPage extends PageObject {
@@ -25,19 +24,12 @@ public class TransactionsPage extends PageObject {
     @FindBy(name = "date")
     private WebElementFacade inputDate;
 
-    @FindBy(xpath = "//button[@type='submit' and contains(., 'Crear')]")
+    @FindBy(css = "button[type='submit']")
     private WebElementFacade buttonSubmit;
 
     public void clickNewTransaction() {
-        waitForCondition().withTimeout(Duration.ofSeconds(15))
-            .until(ExpectedConditions.elementToBeClickable(buttonOpenModal));
-
-        evaluateJavascript("arguments[0].scrollIntoView({behavior: 'instant', block: 'center'});", buttonOpenModal);
-        waitABit(1000);
-        buttonOpenModal.click();
-        
-        inputDescription.withTimeoutOf(Duration.ofSeconds(10)).waitUntilVisible();
-        waitABit(2000); 
+        buttonOpenModal.waitUntilClickable().click();
+        inputDescription.waitUntilVisible();
     }
 
     private void interactWithCustomSelect(String labelPart, String optionSearchText) {
@@ -47,14 +39,12 @@ public class TransactionsPage extends PageObject {
         
         trigger.waitUntilClickable().click();
         
-        waitABit(1200); 
-        
         By optionLocator = By.xpath("//div[@role='option' or @role='menuitem' or @role='listbox']//*[contains(text(), '" + optionSearchText + "')] | //div[@role='option' or @role='menuitem' or @role='listbox'][contains(., '" + optionSearchText + "')]");
         
-        withTimeoutOf(Duration.ofSeconds(8)).waitFor(ExpectedConditions.elementToBeClickable(optionLocator));
-        $(optionLocator).click();
+        withTimeoutOf(Duration.ofSeconds(10)).waitFor(ExpectedConditions.visibilityOfElementLocated(optionLocator));
+        $(optionLocator).waitUntilClickable().click();
         
-        waitABit(1000); 
+        $(optionLocator).waitUntilNotVisible();
     }
 
     public void selectType(String type) {
@@ -68,18 +58,9 @@ public class TransactionsPage extends PageObject {
     }
 
     public void selectCategory(String category) {
-        String[] options = {"Alimentación", "Transporte", "Vivienda", "Salud", "Educación", "Entretenimiento", "Otros"};
-        String target = "Otros";
-        
-        if (category != null && !category.isEmpty() && !category.equalsIgnoreCase("random") && !category.equalsIgnoreCase("Others")) {
-            target = category;
-        } else {
-            target = options[new Random().nextInt(options.length)];
-        }
-        
-        String searchText = target;
-        if (target.contains("ó")) searchText = target.substring(0, target.indexOf("ó"));
-        if (target.contains("í")) searchText = target.substring(0, target.indexOf("í"));
+        String searchText = category;
+        if (category.contains("ó")) searchText = category.substring(0, category.indexOf("ó"));
+        if (category.contains("í")) searchText = category.substring(0, category.indexOf("í"));
         
         interactWithCustomSelect("Categ", searchText);
     }
@@ -107,9 +88,7 @@ public class TransactionsPage extends PageObject {
 
     public void clickSubmit() {
         buttonSubmit.waitUntilClickable().click();
-        
-        buttonSubmit.withTimeoutOf(Duration.ofSeconds(10)).waitUntilNotVisible();
-        waitABit(2500); 
+        buttonSubmit.waitUntilNotVisible();
     }
 
     public void clickSubmitButton() {

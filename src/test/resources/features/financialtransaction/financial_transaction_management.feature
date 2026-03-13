@@ -13,5 +13,5 @@ Feature: Financial transaction management
 
     Examples:
       | name  | email          | password | type    | description       | amount | date       |
-      | Elian | elianm@test.com | Pigo0173!     | income  | Initial Salary    | 2000   | 2025-01-15 |
-      | Juan  | juan  @test.com  | Pigo0173!     | expense | Rent Payment      | 800    | 2025-01-20 |
+      | Elian | elia4333nm@test.com | Pigo0173!     | income  | Initial Salary    | 2000   | 2025-01-15 |
+      | Juan  | jua33n4@test.com  | Pigo0173!     | expense | Rent Payment      | 800    | 2025-01-20 |

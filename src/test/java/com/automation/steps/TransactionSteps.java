@@ -5,6 +5,8 @@ import com.automation.pages.DashboardPage;
 import net.serenitybdd.annotations.Step;
 import org.assertj.core.api.Assertions;
 
+import java.util.Random;
+
 public class TransactionSteps {
 
     private TransactionsPage transactionsPage;
@@ -21,16 +23,24 @@ public class TransactionSteps {
     public void registerTransaction(String type, String description, String amount, String date) {
         transactionsPage.clickNewTransaction();
         transactionsPage.selectTransactionType(type);
-        transactionsPage.selectCategory("Others"); // Default if not provided
+        
+        String[] defaultCategories = {"Alimentación", "Transporte", "Vivienda", "Salud", "Educación", "Entretenimiento", "Otros"};
+        String category = defaultCategories[new Random().nextInt(defaultCategories.length)];
+        transactionsPage.selectCategory(category);
+        
         transactionsPage.enterDescription(description);
         transactionsPage.enterAmount(amount);
         transactionsPage.enterDate(date);
         transactionsPage.clickSubmit();
     }
 
-    @Step("Verify that the transaction {0} appears in the transactions list")
-    public void verifyTransactionInList(String description) {
+    @Step("Verify that the transaction {0} and amount {1} appear in the transactions list")
+    public void verifyTransactionInList(String description, Integer amount) {
+        String expectedAmount = String.valueOf(amount);
         Assertions.assertThat(transactionsPage.getTransactionDescriptions())
-                .anyMatch(text -> text.contains(description));
+                .anyMatch(text -> {
+                    String normalizedText = text.replaceAll("[.$ ,]", "");
+                    return text.contains(description) && normalizedText.contains(expectedAmount);
+                });
     }
 }
