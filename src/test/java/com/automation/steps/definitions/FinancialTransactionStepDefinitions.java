@@ -42,6 +42,6 @@ public class FinancialTransactionStepDefinitions {
 
     @Then("the user should see the transaction {string} with amount {int} in the list")
     public void verifyTransactionInList(String description, Integer amount) {
-        transactionSteps.verifyTransactionInList(description);
+        transactionSteps.verifyTransactionInList(description, amount);
     }
 }
